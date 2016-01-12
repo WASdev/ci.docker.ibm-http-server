@@ -21,10 +21,10 @@ An IBM HTTP Server ILAN image can be built by obtaining the following binaries:
   * was.repo.8550.wct.ilan_part2.zip
  
   Fixpack 8.5.5.8 binaries:
-* 8.5.5-WS-WASSupplements-FP0000008-part1.zip
-* 8.5.5-WS-WASSupplements-FP0000008-part2.zip
-* 8.5.5-WS-WCT-FP0000008-part1.zip
-* 8.5.5-WS-WCT-FP0000008-part2.zip
+  * 8.5.5-WS-WASSupplements-FP0000008-part1.zip
+  * 8.5.5-WS-WASSupplements-FP0000008-part2.zip
+  * 8.5.5-WS-WCT-FP0000008-part1.zip
+  * 8.5.5-WS-WCT-FP0000008-part2.zip
   
 IBM HTTP Server ILAN install image is created in two steps using the following two Dockerfiles to reduce the final image size:
 
