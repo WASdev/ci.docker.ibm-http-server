@@ -2,19 +2,22 @@
 
 An IBM HTTP Server production image can be built by obtaining the following binaries:
 * IBM Installation Manager binaries from [Passport Advantage](http://www-01.ibm.com/software/passportadvantage/pao_customer.html)
+
   IBM Installation Manager binaries:
-  Install_Mgr_v1.6.2_Lnx_WASv8.5.5.zip(CIK2GML) 
+  * Install_Mgr_v1.6.2_Lnx_WASv8.5.5.zip(CIK2GML) 
+
 * IBM HTTP Server,IBM WebServer Plugins and IBM WebSphere Customization Tools binaries from [Passport Advantage](http://www-01.ibm.com/software/passportadvantage/pao_customer.html) / [Fix Central](http://www-933.ibm.com/support/fixcentral/)
+
   IBM HTTP Server,IBM WebServer Plugins and IBM WebSphere Customization Tools 8.5.5 binaries:
-  WAS_V8.5.5_SUPPL_1_OF_3.zip(CIK1VML)
-  WAS_V8.5.5_SUPPL_1_OF_3.zip(CIK1WML)
-  WAS_V8.5.5_SUPPL_1_OF_3.zip(CIK1XML)
+  * WAS_V8.5.5_SUPPL_1_OF_3.zip(CIK1VML)
+  * WAS_V8.5.5_SUPPL_1_OF_3.zip(CIK1WML)
+  * WAS_V8.5.5_SUPPL_1_OF_3.zip(CIK1XML)
 
   Fixpack 8.5.5.8 binaries:
-  8.5.5-WS-WASSupplements-FP0000008-part1.zip
-  8.5.5-WS-WASSupplements-FP0000008-part2.zip
-  8.5.5-WS-WCT-FP0000008-part1.zip
-  8.5.5-WS-WCT-FP0000008-part2.zip
+  * 8.5.5-WS-WASSupplements-FP0000008-part1.zip
+  * 8.5.5-WS-WASSupplements-FP0000008-part2.zip
+  * 8.5.5-WS-WCT-FP0000008-part1.zip
+  * 8.5.5-WS-WCT-FP0000008-part2.zip
 
 IBM HTTP Server production install image is created in two steps using the following two Dockerfiles to reduce the final image size:
 

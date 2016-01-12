@@ -2,26 +2,29 @@
 
 An IBM HTTP Server ILAN image can be built by obtaining the following binaries:
 * IBM Installation Manager binaries from [developerWorks](http://www.ibm.com/developerworks/downloads/ws/wasdevelopers/)
+
   IBM Installation Manager binaries:
-  agent.installer.linux.gtk.x86_64_1.6.2000.20130301_2248.zip
+  * agent.installer.linux.gtk.x86_64_1.6.2000.20130301_2248.zip
+
 * IBM HTTP Server, IBM WebServer Plugins and IBM WebSphere Customization Tools binaries from [developerWorks](http://www.ibm.com/developerworks/downloads/ws/wasdevelopers/) / [Fix Central](http://www-933.ibm.com/support/fixcentral/)
+
   IBM HTTP Server 8.5.5 binaries:
-  was.repo.8550.ihs.ilan_part1.zip
-  was.repo.8550.ihs.ilan_part2.zip
+  * was.repo.8550.ihs.ilan_part1.zip
+  * was.repo.8550.ihs.ilan_part2.zip
 
   IBM WebServer Plugins 8.5.5 binaries:
-  was.repo.8550.plg.ilan_part1.zip
-  was.repo.8550.plg.ilan_part2.zip
+  * was.repo.8550.plg.ilan_part1.zip
+  * was.repo.8550.plg.ilan_part2.zip
 
   IBM WebSphere Customization Tools 8.5.5 binaries:
-  was.repo.8550.wct.ilan_part1.zip
-  was.repo.8550.wct.ilan_part2.zip
+  * was.repo.8550.wct.ilan_part1.zip
+  * was.repo.8550.wct.ilan_part2.zip
  
   Fixpack 8.5.5.8 binaries:
-  8.5.5-WS-WASSupplements-FP0000008-part1.zip
-  8.5.5-WS-WASSupplements-FP0000008-part2.zip
-  8.5.5-WS-WCT-FP0000008-part1.zip
-  8.5.5-WS-WCT-FP0000008-part2.zip
+* 8.5.5-WS-WASSupplements-FP0000008-part1.zip
+* 8.5.5-WS-WASSupplements-FP0000008-part2.zip
+* 8.5.5-WS-WCT-FP0000008-part1.zip
+* 8.5.5-WS-WCT-FP0000008-part2.zip
   
 IBM HTTP Server ILAN install image is created in two steps using the following two Dockerfiles to reduce the final image size:
 
