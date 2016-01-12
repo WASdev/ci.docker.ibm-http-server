@@ -75,7 +75,9 @@ Dockerfile.install does the following:
     docker run --name <container-name> -h <container-name> -p 80:80 <image-name>                        
     ```                                                                                                 
                                                                                           
-    e.g                                                                                   
+
+    e.g:                                                                                   
+
                                                                                           
     ```bash                                                                               
     docker run --name ihs -h ihs -p 80:80 ihs                                             

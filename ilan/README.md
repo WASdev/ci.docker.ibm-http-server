@@ -80,13 +80,14 @@ Complete the following steps to build the image
 ## Running the IBM HTTP Server ILAN image
 
    Run the HTTP Server container using:
+
     ```bash
     docker run --name <container-name> -h <container-name> -p 80:80 <image-name>
     ```
 
-    e.g
+    e.g:
+
     
     ```bash
     docker run --name ihs -h ihs -p 80:80 ihs
     ```
-

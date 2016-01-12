@@ -107,7 +107,3 @@ RUN mkdir /tmp/wct \
     && rm -fr /tmp/wct                      
 
 CMD["tar","-cvf","/tmp/ihs_plg_wct.tar","/opt/IBM/HTTPServer","/opt/IBM/WebSphere/Plugins","/opt/IBM/WebSphere/Toolbox/WCT"]
-
-
-
-
