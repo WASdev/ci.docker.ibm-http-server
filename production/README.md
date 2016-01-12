@@ -69,16 +69,14 @@ Dockerfile.install does the following:
 
 ## Running the IBM HTTP Server Production image                                                               
                                                                                                         
-   Run the HTTP Server container using:
+Run the HTTP Server container using:
 
-    ```bash                                                                                             
-    docker run --name <container-name> -h <container-name> -p 80:80 <image-name>                        
-    ```                                                                                                 
+```bash                                                                                             
+docker run --name <container-name> -h <container-name> -p 80:80 <image-name>                        
+```                                                                                                 
+
+Example:                                                                                   
                                                                                           
-
-    e.g:                                                                                   
-
-                                                                                          
-    ```bash                                                                               
-    docker run --name ihs -h ihs -p 80:80 ihs                                             
-    ```         
+```bash                                                                               
+docker run --name ihs -h ihs -p 80:80 ihs                                             
+```         
