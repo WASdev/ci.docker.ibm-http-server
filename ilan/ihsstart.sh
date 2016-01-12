@@ -6,7 +6,7 @@
 #                                                                                   #
 #  Usage : ihsstart.sh                                                              #
 #                                                                                   #
-#  Author : Kavitha                                                                 #
+#  Author : Kavitha Suresh Kumar <kavisuresh@in.ibm.com>                            #
 #                                                                                   #
 #####################################################################################
 

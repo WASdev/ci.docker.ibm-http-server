@@ -1,10 +1,29 @@
-# Building an IBM HTTP Server ILAN image from binaries
+# Building an IBM HTTP Server v8.5.5 ILAN image from binaries
 
 An IBM HTTP Server ILAN image can be built by obtaining the following binaries:
 * IBM Installation Manager binaries from [developerWorks](http://www.ibm.com/developerworks/downloads/ws/wasdevelopers/)
-* IBM WebSphere Application Server Classic Developer binaries from [developerWorks](http://www.ibm.com/developerworks/downloads/ws/wasdevelopers/) / [Fix Central](http://www-933.ibm.com/support/fixcentral/)
+  IBM Installation Manager binaries:
+  agent.installer.linux.gtk.x86_64_1.6.2000.20130301_2248.zip
+* IBM HTTP Server, IBM WebServer Plugins and IBM WebSphere Customization Tools binaries from [developerWorks](http://www.ibm.com/developerworks/downloads/ws/wasdevelopers/) / [Fix Central](http://www-933.ibm.com/support/fixcentral/)
+  IBM HTTP Server 8.5.5 binaries:
+  was.repo.8550.ihs.ilan_part1.zip
+  was.repo.8550.ihs.ilan_part2.zip
 
-IBM HTTP Server ILAN install image is created in two steps using the following two Dockerfiles:
+  IBM WebServer Plugins 8.5.5 binaries:
+  was.repo.8550.plg.ilan_part1.zip
+  was.repo.8550.plg.ilan_part2.zip
+
+  IBM WebSphere Customization Tools 8.5.5 binaries:
+  was.repo.8550.wct.ilan_part1.zip
+  was.repo.8550.wct.ilan_part2.zip
+ 
+  Fixpack 8.5.5.8 binaries:
+  8.5.5-WS-WASSupplements-FP0000008-part1.zip
+  8.5.5-WS-WASSupplements-FP0000008-part2.zip
+  8.5.5-WS-WCT-FP0000008-part1.zip
+  8.5.5-WS-WCT-FP0000008-part2.zip
+  
+IBM HTTP Server ILAN install image is created in two steps using the following two Dockerfiles to reduce the final image size:
 
 1. [Dockerfile.prereq](Dockerfile.prereq)
 2. [Dockerfile.install](Dockerfile.install)
@@ -18,9 +37,9 @@ Dockerfile.prereq does the following:
 5. Updates WebServer Plugins with the Fixpack
 6. Installs WebSphere Customization Tools
 7. Updates WebSphere Customization Tools with the Fixpack
-8. When the container is started a tar file of the IBM HTTP Server, WebServer Plugins and  WCT installation is created
+8. When the container is started a tar file of the IBM HTTP Server, WebServer Plugins and WCT installation is created
 
-Dockerfile.prereq takes the value for the following variable during build time
+Dockerfile.prereq takes the value for the following variable during build time:
 
 * URL(required) - URL from where the binaries are downloaded
 
@@ -57,6 +76,7 @@ Complete the following steps to build the image
 
 ## Running the IBM HTTP Server ILAN image
 
+   Run the HTTP Server container using:
     ```bash
     docker run --name <container-name> -h <container-name> -p 80:80 <image-name>
     ```

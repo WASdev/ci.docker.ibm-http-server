@@ -23,7 +23,7 @@ RUN apt-get install -y  unzip wget
 
 ARG URL
 
-###################### Installation Manager ########################
+####################### Installation Manager ##########################
 
 # Install Installation Manager
 RUN wget -q $URL/Install_Mgr_v1.6.2_Lnx_WASv8.5.5.zip -O /tmp/IM.zip \
@@ -33,9 +33,9 @@ RUN wget -q $URL/Install_Mgr_v1.6.2_Lnx_WASv8.5.5.zip -O /tmp/IM.zip \
       -dataLocation "/var/ibm/InstallationManager" -showProgress \
     && rm -fr /tmp/IM.zip /tmp/im
 
-##################### IBM HTTPServer ##################################
+##################### IBM HTTP Server ##################################
 
-# Install IBM HttpServer
+# Install IBM HTTP Server
 RUN mkdir /tmp/supp \
     && wget -q $URL/WAS_V8.5.5_SUPPL_1_OF_3.zip -O /tmp/supp1.zip \
     && wget -q $URL/WAS_V8.5.5_SUPPL_2_OF_3.zip -O /tmp/supp2.zip \
@@ -52,7 +52,7 @@ RUN mkdir /tmp/supp \
 
 ##################### IBM HTTPServer Fixpack ##################################
 
-# Install IBM HttpServer
+# Install IBM HTTP Server Fixpack
 RUN mkdir /tmp/suppfp \
     && wget -q $URL/8.5.5-WS-WASSupplements-FP0000008-part1.zip -O /tmp/spart1.zip \
     && wget -q $URL/8.5.5-WS-WASSupplements-FP0000008-part2.zip -O /tmp/spart2.zip \
@@ -84,15 +84,16 @@ RUN /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
 
 ####################### WebSphere Customization Tools ##########################
 
-# Install IBM WCT
+# Install IBM WebSphere Customization Tools
 RUN /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
       -acceptLicense  install com.ibm.websphere.WCT.v85 \
       -repositories /tmp/supp/repository.config  \
       -installationDirectory /opt/IBM/WebSphere/Toolbox \
     && rm -fr /tmp/supp 
 
-################### WebSphere Customization Tools Fixpack ################# 
+###################### WebSphere Customization Tools Fixpack ################### 
 
+# Install IBM WebSphere Customization Tools Fixpack
 RUN mkdir /tmp/wct \                                                                         
     && wget -q $URL/8.5.5-WS-WCT-FP0000008-part1.zip -O /tmp/wct1.zip \                       
     && wget -q $URL/8.5.5-WS-WCT-FP0000008-part2.zip -O /tmp/wct2.zip \                       
@@ -105,7 +106,7 @@ RUN mkdir /tmp/wct \
       -installationDirectory /opt/IBM/WebSphere/Toolbox \                                                             
     && rm -fr /tmp/wct                      
 
-CMD tar -cvf /tmp/ihs_plg_wct.tar /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox/WCT
+CMD["tar","-cvf","/tmp/ihs_plg_wct.tar","/opt/IBM/HTTPServer","/opt/IBM/WebSphere/Plugins","/opt/IBM/WebSphere/Toolbox/WCT"]
 
 
 

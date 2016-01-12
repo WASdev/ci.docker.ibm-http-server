@@ -23,7 +23,7 @@ RUN apt-get install -y  unzip wget
 
 ARG URL
 
-################## Installation Manager #######################
+########################### Installation Manager #########################
 
 # Install Installation Manager
 RUN wget -q $URL/agent.installer.linux.gtk.x86_64_1.6.2000.20130301_2248.zip -O /tmp/IM.zip \
@@ -35,7 +35,7 @@ RUN wget -q $URL/agent.installer.linux.gtk.x86_64_1.6.2000.20130301_2248.zip -O 
 
 ########################### IBM HTTPServer ##################################
 
-# Install IBM HttpServer
+# Install IBM HTTP Server
 RUN mkdir /tmp/ihs \
     && wget -q $URL/was.repo.8550.ihs.ilan_part1.zip -O /tmp/ihs1.zip \
     && wget -q $URL/was.repo.8550.ihs.ilan_part2.zip -O /tmp/ihs2.zip \
@@ -49,9 +49,9 @@ RUN mkdir /tmp/ihs \
       -properties "user.ihs.httpPort=80,user.ihs.allowNonRootSilentInstall=true" \
     && rm -fr /tmp/ihs
 
-######################## IBM HTTPServer Fixpack ###############################
+######################## IBM HTTP Server Fixpack ###############################
 
-# Install IBM HttpServer
+# Install IBM HTTP Server
 RUN mkdir /tmp/supp \
     && wget -q $URL/8.5.5-WS-WASSupplements-FP0000008-part1.zip -O /tmp/spart1.zip \
     && wget -q $URL/8.5.5-WS-WASSupplements-FP0000008-part2.zip -O /tmp/spart2.zip \
@@ -118,9 +118,4 @@ RUN mkdir /tmp/wct \
       -installationDirectory /opt/IBM/WebSphere/Toolbox \                                                                                                                            
     && rm -fr /tmp/wct  
 
-
-CMD tar -cvf /tmp/ihs_plg_wct.tar /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox/WCT
-
-
-
-
+CMD["tar","-cvf","/tmp/ihs_plg_wct.tar","/opt/IBM/HTTPServer","/opt/IBM/WebSphere/Plugins","/opt/IBM/WebSphere/Toolbox/WCT"]
