@@ -118,4 +118,4 @@ RUN mkdir /tmp/wct \
       -installationDirectory /opt/IBM/WebSphere/Toolbox \
     && rm -fr /tmp/wct
                                   
-CMD ["tar","-cvf","/tmp/ihs_plg_wct.tar","/opt/IBM/HTTPServer","/opt/IBM/WebSphere/Plugins","/opt/IBM/WebSphere/Toolbox/WCT"]
+CMD ["tar","cvf","/tmp/ihs_plg_wct.tar","/opt/IBM/HTTPServer","/opt/IBM/WebSphere/Plugins","/opt/IBM/WebSphere/Toolbox/WCT"]
