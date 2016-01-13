@@ -31,7 +31,7 @@ IBM HTTP Server ILAN install image is created in two steps using the following t
 1. [Dockerfile.prereq](Dockerfile.prereq)
 2. [Dockerfile.install](Dockerfile.install)
 
-Dockerfile.prereq does the following:
+Dockerfile.prereq perform the following actions:
 
 1. Installs IBM Installation Manager
 2. Installs IBM HTTP Server
@@ -46,7 +46,7 @@ Dockerfile.prereq take the value for the following variable during build time:
 
 * URL(required) - URL from where the binaries are downloaded
 
-Dockerfile.install does the following:     
+Dockerfile.install perform the following actions:     
 
 1. Extracts the tar file created by Dockerfile.prereq
 2. Copies the startup script to the image
@@ -56,7 +56,7 @@ Dockerfile.install does the following:
 
 Complete the following steps to build the image
 
-1. Place the downloaded IBM Installation Manager and IBM HTTP Server binaries on the FTP or HTTP server.
+1. Place the downloaded IBM Installation Manager and IBM HTTP Server, IBM WebServer Plugins and IBM WebSphere Customization Tools binaries on the FTP or HTTP server.
 2. Clone this repository.
 3. Move to the directory `ilan`.
 4. Build the prereq image using:

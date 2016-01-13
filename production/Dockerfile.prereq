@@ -23,7 +23,7 @@ RUN apt-get install -y  unzip wget
 
 ARG URL
 
-####################### Installation Manager ##########################
+######################### Installation Manager #############################
 
 # Install Installation Manager
 RUN wget -q $URL/Install_Mgr_v1.6.2_Lnx_WASv8.5.5.zip -O /tmp/IM.zip \
@@ -33,7 +33,7 @@ RUN wget -q $URL/Install_Mgr_v1.6.2_Lnx_WASv8.5.5.zip -O /tmp/IM.zip \
       -dataLocation "/var/ibm/InstallationManager" -showProgress \
     && rm -fr /tmp/IM.zip /tmp/im
 
-##################### IBM HTTP Server ##################################
+######################### IBM HTTP Server ##################################
 
 # Install IBM HTTP Server
 RUN mkdir /tmp/supp \
@@ -106,4 +106,4 @@ RUN mkdir /tmp/wct \
       -installationDirectory /opt/IBM/WebSphere/Toolbox \                                                             
     && rm -fr /tmp/wct                      
 
-CMD["tar","-cvf","/tmp/ihs_plg_wct.tar","/opt/IBM/HTTPServer","/opt/IBM/WebSphere/Plugins","/opt/IBM/WebSphere/Toolbox/WCT"]
+CMD ["tar","-cvf","/tmp/ihs_plg_wct.tar","/opt/IBM/HTTPServer","/opt/IBM/WebSphere/Plugins","/opt/IBM/WebSphere/Toolbox/WCT"]
