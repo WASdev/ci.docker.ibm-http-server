@@ -3,10 +3,7 @@
 #                                                                                   #
 #  Script to start the server                                                       #
 #                                                                                   #
-#                                                                                   #
 #  Usage : ihsstart.sh                                                              #
-#                                                                                   #
-#  Author : Kavitha Suresh Kumar <kavisuresh@in.ibm.com>                            #
 #                                                                                   #
 #####################################################################################
 

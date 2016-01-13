@@ -33,7 +33,7 @@ RUN wget -q $URL/agent.installer.linux.gtk.x86_64_1.6.2000.20130301_2248.zip -O 
       -dataLocation "/var/ibm/InstallationManager" -showProgress \
     && rm -fr /tmp/IM.zip /tmp/im
 
-########################### IBM HTTPServer ##################################
+########################### IBM HTTP Server ################################
 
 # Install IBM HTTP Server
 RUN mkdir /tmp/ihs \

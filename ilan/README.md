@@ -42,7 +42,7 @@ Dockerfile.prereq does the following:
 7. Updates WebSphere Customization Tools with the Fixpack
 8. When the container is started a tar file of the IBM HTTP Server, WebServer Plugins and WCT installation is created
 
-Dockerfile.prereq takes the value for the following variable during build time:
+Dockerfile.prereq take the value for the following variable during build time:
 
 * URL(required) - URL from where the binaries are downloaded
 
@@ -58,14 +58,14 @@ Complete the following steps to build the image
 
 1. Place the downloaded IBM Installation Manager and IBM HTTP Server binaries on the FTP or HTTP server.
 2. Clone this repository.
-3. Move to the directory `ibm-http-server/ilan`.
+3. Move to the directory `ilan`.
 4. Build the prereq image using:
 
     ```bash
     docker build --build-arg URL=<URL> -t <prereq-image-name> -f Dockerfile.prereq .
     ```
 
-5. Run a container using the prereq image to get the tar file to the current folder using:
+5. Run a container using the prereq image to create the tar file in the current folder using:
 
     ```bash
     docker run --rm -v $(pwd):/tmp <prereq-image-name>
@@ -82,10 +82,10 @@ Complete the following steps to build the image
 Run the HTTP Server container using:
 
 ```bash
-docker run --name <container-name> -h <container-name> -p 80:80 <image-name>
+docker run --name <container-name> -h <container-name> -p 80:80 <install-image-name>
 ```
 Example:
     
 ```bash
-docker run --name ihs -h ihs -p 80:80 ihs
+docker run --name ihs -h ihs -p 80:80 ihsimage
 ```
