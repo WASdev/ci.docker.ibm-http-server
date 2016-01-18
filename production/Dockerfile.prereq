@@ -26,15 +26,12 @@ ARG URL
 ######################### Installation Manager #############################
 
 # Install Installation Manager
-RUN wget -q "$URL/Install_Mgr_v1.6.2_Lnx_WASv8.5.5.zip" -O /tmp/IM.zip
-
-RUN mkdir /tmp/im &&  unzip -qd /tmp/im /tmp/IM.zip
-
-RUN	/tmp/im/installc -acceptLicense -accessRights admin \
+RUN wget -q "$URL/Install_Mgr_v1.6.2_Lnx_WASv8.5.5.zip" -O /tmp/IM.zip \
+&& mkdir /tmp/im &&  unzip -qd /tmp/im /tmp/IM.zip \
+&&	/tmp/im/installc -acceptLicense -accessRights admin \
       -installationDirectory "/opt/IBM/InstallationManager"  \
-      -dataLocation "/var/ibm/InstallationManager" -showProgress
-	  
-RUN rm -fr /tmp/IM.zip /tmp/im
+      -dataLocation "/var/ibm/InstallationManager" -showProgress \
+&& rm -fr /tmp/IM.zip /tmp/im
 
 ######################### IBM HTTP Server ##################################
 
