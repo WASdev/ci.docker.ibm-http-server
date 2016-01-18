@@ -26,20 +26,20 @@ ARG URL
 ######################### Installation Manager #############################
 
 # Install Installation Manager
-RUN wget -q $URL/Install_Mgr_v1.6.2_Lnx_WASv8.5.5.zip -O /tmp/IM.zip \
-    && mkdir /tmp/im &&  unzip -qd /tmp/im /tmp/IM.zip \
-    && /tmp/im/installc -acceptLicense -accessRights admin \
+RUN wget -q "$URL/Install_Mgr_v1.6.2_Lnx_WASv8.5.5.zip" -O /tmp/IM.zip \
+&& mkdir /tmp/im &&  unzip -qd /tmp/im /tmp/IM.zip \
+&&	/tmp/im/installc -acceptLicense -accessRights admin \
       -installationDirectory "/opt/IBM/InstallationManager"  \
       -dataLocation "/var/ibm/InstallationManager" -showProgress \
-    && rm -fr /tmp/IM.zip /tmp/im
+&& rm -fr /tmp/IM.zip /tmp/im
 
 ######################### IBM HTTP Server ##################################
 
 # Install IBM HTTP Server
 RUN mkdir /tmp/supp \
-    && wget -q $URL/WAS_V8.5.5_SUPPL_1_OF_3.zip -O /tmp/supp1.zip \
-    && wget -q $URL/WAS_V8.5.5_SUPPL_2_OF_3.zip -O /tmp/supp2.zip \
-    && wget -q $URL/WAS_V8.5.5_SUPPL_3_OF_3.zip -O /tmp/supp3.zip \
+    && wget -q "$URL/WAS_V8.5.5_SUPPL_1_OF_3.zip" -O /tmp/supp1.zip \
+    && wget -q "$URL/WAS_V8.5.5_SUPPL_2_OF_3.zip" -O /tmp/supp2.zip \
+    && wget -q "$URL/WAS_V8.5.5_SUPPL_3_OF_3.zip" -O /tmp/supp3.zip \
     && unzip  -qd /tmp/supp /tmp/supp1.zip \
     && unzip  -qd /tmp/supp /tmp/supp2.zip \
     && unzip  -qd /tmp/supp /tmp/supp3.zip \
@@ -54,8 +54,8 @@ RUN mkdir /tmp/supp \
 
 # Install IBM HTTP Server Fixpack
 RUN mkdir /tmp/suppfp \
-    && wget -q $URL/8.5.5-WS-WASSupplements-FP0000008-part1.zip -O /tmp/spart1.zip \
-    && wget -q $URL/8.5.5-WS-WASSupplements-FP0000008-part2.zip -O /tmp/spart2.zip \
+    && wget -q "$URL/8.5.5-WS-WASSupplements-FP0000008-part1.zip" -O /tmp/spart1.zip \
+    && wget -q "$URL/8.5.5-WS-WASSupplements-FP0000008-part2.zip" -O /tmp/spart2.zip \
     && unzip  -qd /tmp/suppfp /tmp/spart1.zip \
     && unzip  -qd /tmp/suppfp /tmp/spart2.zip \
     && rm /tmp/spart1.zip /tmp/spart2.zip \
@@ -95,8 +95,8 @@ RUN /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
 
 # Install IBM WebSphere Customization Tools Fixpack
 RUN mkdir /tmp/wct \                                                                         
-    && wget -q $URL/8.5.5-WS-WCT-FP0000008-part1.zip -O /tmp/wct1.zip \                       
-    && wget -q $URL/8.5.5-WS-WCT-FP0000008-part2.zip -O /tmp/wct2.zip \                       
+    && wget -q "$URL/8.5.5-WS-WCT-FP0000008-part1.zip" -O /tmp/wct1.zip \                       
+    && wget -q "$URL/8.5.5-WS-WCT-FP0000008-part2.zip" -O /tmp/wct2.zip \                       
     && unzip  -qd /tmp/wct /tmp/wct1.zip \                                                                          
     && unzip  -qd /tmp/wct /tmp/wct2.zip \                                                                          
     && rm /tmp/wct1.zip /tmp/wct2.zip \                                                                             
