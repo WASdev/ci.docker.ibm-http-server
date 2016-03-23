@@ -13,11 +13,11 @@ An IBM HTTP Server production image can be built by obtaining the following bina
   * WAS_V8.5.5_SUPPL_1_OF_3.zip(CIK1WML)
   * WAS_V8.5.5_SUPPL_1_OF_3.zip(CIK1XML)
 
-  Fixpack 8.5.5.8 binaries:
-  * 8.5.5-WS-WASSupplements-FP0000008-part1.zip
-  * 8.5.5-WS-WASSupplements-FP0000008-part2.zip
-  * 8.5.5-WS-WCT-FP0000008-part1.zip
-  * 8.5.5-WS-WCT-FP0000008-part2.zip
+  Fixpack 8.5.5.9 binaries:
+  * 8.5.5-WS-WASSupplements-FP0000009-part1.zip
+  * 8.5.5-WS-WASSupplements-FP0000009-part2.zip
+  * 8.5.5-WS-WCT-FP0000009-part1.zip
+  * 8.5.5-WS-WCT-FP0000009-part2.zip
 
 IBM HTTP Server production install image is created in two steps using the following Dockerfiles to reduce the final image size:
 

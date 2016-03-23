@@ -107,8 +107,8 @@ RUN mkdir /tmp/wct \
                                                                             
 # Install IBM WebSphere Customization Tools Fixpack                         
 RUN mkdir /tmp/wct \                                                        
-    && wget -q $URL/8.5.5-WS-WCT-FP0000008-part1.zip -O /tmp/wct1.zip \     
-    && wget -q $URL/8.5.5-WS-WCT-FP0000008-part2.zip -O /tmp/wct2.zip \     
+    && wget -q $URL/8.5.5-WS-WCT-FP0000009-part1.zip -O /tmp/wct1.zip \     
+    && wget -q $URL/8.5.5-WS-WCT-FP0000009-part2.zip -O /tmp/wct2.zip \     
     && unzip  -qd /tmp/wct /tmp/wct1.zip \                                  
     && unzip  -qd /tmp/wct /tmp/wct2.zip \                                  
     && rm /tmp/wct1.zip /tmp/wct2.zip \                                     
