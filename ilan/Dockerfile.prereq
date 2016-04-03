@@ -51,10 +51,10 @@ RUN mkdir /tmp/ihs \
 
 ######################## IBM HTTP Server Fixpack ###############################
 
-# Install IBM HTTP Server
+# Install IBM HTTP Server Fixpack
 RUN mkdir /tmp/supp \
-    && wget -q $URL/8.5.5-WS-WASSupplements-FP0000008-part1.zip -O /tmp/spart1.zip \
-    && wget -q $URL/8.5.5-WS-WASSupplements-FP0000008-part2.zip -O /tmp/spart2.zip \
+    && wget -q $URL/8.5.5-WS-WASSupplements-FP0000009-part1.zip -O /tmp/spart1.zip \
+    && wget -q $URL/8.5.5-WS-WASSupplements-FP0000009-part2.zip -O /tmp/spart2.zip \
     && unzip  -qd /tmp/supp /tmp/spart1.zip \
     && unzip  -qd /tmp/supp /tmp/spart2.zip \
     && rm /tmp/spart1.zip /tmp/spart2.zip \
