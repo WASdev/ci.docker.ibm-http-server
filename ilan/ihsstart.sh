@@ -7,12 +7,38 @@
 #                                                                                   #
 #####################################################################################
 
-# Starting IBM HTTPServer
-/opt/IBM/HTTPServer/bin/apachectl start
+startServer()
+{
+    echo "Starting IBM HTTP Server "
+    # Starting IBM HTTPServer
+    /opt/IBM/HTTPServer/bin/apachectl start
 
-echo "IBM HTTP Server started successfully"
+    if [ $? = 0 ]
+    then
+       echo "IBM HTTP Server started successfully"
+    else
+       echo "Failed to start IBM HTTP Server"
+    fi
+}
 
-while [ `ps -eaf | grep httpd | wc -l` > 4 ]
+stopServer()
+{
+    echo "Stopping IBM HTTP Server "
+    # Stopping IBM HTTPServer
+    /opt/IBM/HTTPServer/bin/apachectl graceful-stop
+    if [ $? = 0 ]
+    then
+       echo "IBM HTTP Server stopped successfully"
+    fi
+}
+
+startServer
+
+trap "stopServer" SIGTERM  
+
+sleep 10
+
+while [ -f "/opt/IBM/HTTPServer/logs/httpd.pid" ]
 do
    sleep 5
 done
