@@ -25,7 +25,7 @@ stopServer()
 {
     echo "Stopping IBM HTTP Server "
     # Stopping IBM HTTPServer
-    /opt/IBM/HTTPServer/bin/apachectl stop
+    /opt/IBM/HTTPServer/bin/apachectl graceful-stop
     if [ $? = 0 ]
     then
        echo "IBM HTTP Server stopped successfully"
@@ -34,9 +34,11 @@ stopServer()
 
 startServer
 
-trap "stopServer" SIGTERM SIGKILL 
+trap "stopServer" SIGTERM  
 
-while [ `ps -eaf | grep httpd | wc -l` > 4 ]
+sleep 10
+
+while [ -f "/opt/IBM/HTTPServer/logs/httpd.pid" ]
 do
    sleep 5
 done
