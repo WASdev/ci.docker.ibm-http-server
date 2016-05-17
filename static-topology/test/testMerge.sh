@@ -33,10 +33,13 @@ HELP="--help"
 				docker build -t baseliberty .
 				cd ..
 				cd test
+
+				#Create docker bridge network
+				docker network create net1
 				docker build -t liberty .
-				docker run -d --name liberty1 -h liberty1 --net=statictoplogy_default liberty
-				docker run -d --name liberty2 -h liberty2 --net=statictoplogy_default liberty
-				docker run -d --name liberty3 -h liberty3 --net=statictoplogy_default liberty
+				docker run -d --name liberty1 -h liberty1 --net=net1 liberty
+				docker run -d --name liberty2 -h liberty2 --net=net1 liberty
+				docker run -d --name liberty3 -h liberty3 --net=net1 liberty
 
 
 				#This section waits for Liberty to start otherwise the GenPluginCfg.sh script fails
@@ -118,7 +121,7 @@ HELP="--help"
 
 				#This is the new section to support IHS
 				echo "Pulling down and deploying the IHS image"
-				docker run -d -p 80:80 -h ihs --net=statictoplogy_default  --name=ihs jamielcoleman/ihs:v1
+				docker run -d -p 80:80 -h ihs --net=net1  --name=ihs jamielcoleman/ihs:v1
 				sleep 5s
 				echo "Send the merged xml to the IHS Instance"
 				docker cp merge-cfg.xml ihs:/opt/IBM/WebSphere/Plugins/config/webserver1/plugin-cfg.xml
