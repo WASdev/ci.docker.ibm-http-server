@@ -42,8 +42,8 @@ if [ "$WLP_HOME" != "" ]
             echo "            <WLP_HOME>/bin/pluginCfgMerge.[sh|.bat] -sortVhostGrp -debug plugin-cfg1.xml plugin-cfg2.xml [...] plugin-cfg.xml"
 else
           JAVA_CMD=${JAVA_HOME}/jre/bin/java
-          JAVAPROGRAM=$WLP_HOME/lib/com.ibm.ws.http.plugin.merge_1.0.9.jar
-          MAINCLASS=com.ibm.websphere.http.plugin.merge.PluginMergeToolImpl
+          JAVAPROGRAM=$WLP_HOME/lib/com.ibm.ws.http.plugin.merge_1.1.13.jar
+          MAINCLASS=com.ibm.ws.http.plugin.merge.internal.PluginMergeToolImpl
           VAR="-Djava.ext.dirs=$WLP_HOME/lib"
           $JAVA_CMD $VAR -cp $JAVAPROGRAM $MAINCLASS $@
         fi

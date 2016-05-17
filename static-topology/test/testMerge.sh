@@ -102,7 +102,7 @@ HELP="--help"
 				echo "Copying the merge tool to the container"
 				#docker cp PluginMergeTool-1.0.jar liberty4:/opt/ibm/wlp/lib/com.ibm.ws.http.plugin.merge_1.0.9.jar
 				#work around for broken release of the merge tool on github
-				docker cp com.ibm.ws.http.plugin.merge_1.0.131.jar liberty4:/opt/ibm/wlp/lib/com.ibm.ws.http.plugin.merge_1.0.9.jar
+				#docker cp com.ibm.ws.http.plugin.merge_1.0.131.jar liberty4:/opt/ibm/wlp/lib/com.ibm.ws.http.plugin.merge_1.0.9.jar
 				echo "Tool Coppied"
 				found4=1
 				while [ $found4 != 0 ];
@@ -145,7 +145,6 @@ HELP="--help"
 				echo $port2
 				echo $port3
 
-				echo "Starting comparisons"
 				wget http://0.0.0.0:80/ferret -q -O ferret11.txt
 				port11=$(head -75 ferret1.txt | tail -1 | cut -c 7-11) >> test.txt
 				wget http://0.0.0.0:80/ferret -q -O ferret22.txt
