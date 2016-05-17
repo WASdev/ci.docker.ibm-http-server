@@ -1,5 +1,5 @@
-#!/bin/bash
-
+#!/bin/bash -x
+set -x
 # (C) Copyright IBM Corporation 2015.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,7 @@ if [ "$WLP_HOME" != "" ]
  then
   if [ "$JAVA_HOME" != "" ]
     then
-     if [[ -n "$1" ]] && [[ -n "$2" ]] && [[ -n "$3" ]]  
+     if [[ -n "$1" ]] && [[ -n "$2" ]] && [[ -n "$3" ]]
       then
         if [ $1 = $HELP ]
           then
@@ -29,7 +29,7 @@ if [ "$WLP_HOME" != "" ]
             echo "DESCRIPTION"
             echo "            The PluginCfgMerge Tool combines the plugin-cfg.xml files from two or more unbridged"
             echo "            cells such that the IBM HTTP Server Plugin will route traffic to all servers in the cells. "
-            echo "            A uri is considered to be shared between two unbridged cells if the uri and  
+            echo "            A uri is considered to be shared between two unbridged cells if the uri and
                                                   corresponding virtual host definitions are identical."
             echo "                                                      "
             echo "            The contents of the merged plugin-cfg.xml files must be in English language"
@@ -43,7 +43,7 @@ if [ "$WLP_HOME" != "" ]
 else
           JAVA_CMD=${JAVA_HOME}/jre/bin/java
           JAVAPROGRAM=$WLP_HOME/lib/com.ibm.ws.http.plugin.merge_1.0.9.jar
-          MAINCLASS=com.ibm.ws.http.plugin.merge.internal.PluginMergeToolImpl
+          MAINCLASS=com.ibm.websphere.http.plugin.merge.PluginMergeToolImpl
           VAR="-Djava.ext.dirs=$WLP_HOME/lib"
           $JAVA_CMD $VAR -cp $JAVAPROGRAM $MAINCLASS $@
         fi

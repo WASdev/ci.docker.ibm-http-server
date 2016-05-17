@@ -16,8 +16,6 @@ FROM websphere-liberty
 
 MAINTAINER Jamie Coleman  <jlcoleman@uk.ibm.com>
 
-# Install the collectiveController to get the required com.ibm.ws.http.plugin.merge_1.0.11.jar 
-
 RUN installUtility install --acceptLicense collectiveController-1.0
 
 ENV WLP_HOME=/opt/ibm/wlp

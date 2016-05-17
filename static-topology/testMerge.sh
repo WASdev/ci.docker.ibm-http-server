@@ -33,10 +33,15 @@ HELP="--help"
 				docker build -t baseliberty .
 				cd ..
 				cd test
+				docker network create net1
 				docker build -t liberty .
-				docker run -d --name liberty1 -h liberty1 --net=statictoplogy_default liberty
-				docker run -d --name liberty2 -h liberty2 --net=statictoplogy_default liberty
-				docker run -d --name liberty3 -h liberty3 --net=statictoplogy_default liberty
+				docker run -d -P --net=net1 -h liberty1 --name=liberty1 liberty
+				docker run -d -P --net=net1 -h liberty2 --name=liberty2 liberty
+				docker run -d -P --net=net1 -h liberty3 --name=liberty3 liberty
+
+
+				#This is the command for copying the generated xml FIXXXXX!""
+				#docker cp $1:/opt/ibm/wlp/output/defaultServer/plugin-cfg.xml .
 
 
 				#This section waits for Liberty to start otherwise the GenPluginCfg.sh script fails
@@ -71,11 +76,16 @@ HELP="--help"
 
 				cd ..
 				cd get-plugin-cfg
-				./GetPluginCfg.sh liberty1 liberty1
+				./GetPluginCfg.sh liberty1 net1
+				#docker cp liberty1:/opt/ibm/wlp/output/defaultServer/plugin-cfg.xml .
 				mv plugin-cfg.xml plugin-cfg1.xml
-				./GetPluginCfg.sh liberty2 liberty2
+
+				./GetPluginCfg.sh liberty2 net1
+				#docker cp liberty2:/opt/ibm/wlp/output/defaultServer/plugin-cfg.xml .
 				mv plugin-cfg.xml plugin-cfg2.xml
-				./GetPluginCfg.sh liberty3 liberty3
+
+				./GetPluginCfg.sh liberty3 net1
+				#docker cp liberty3:/opt/ibm/wlp/output/defaultServer/plugin-cfg.xml .
 				mv plugin-cfg.xml plugin-cfg3.xml
 
 				cd ..
@@ -83,6 +93,39 @@ HELP="--help"
 				mv get-plugin-cfg/plugin-cfg2.xml merge-plugin-cfg/plugin-cfg2.xml
 				mv get-plugin-cfg/plugin-cfg3.xml merge-plugin-cfg/plugin-cfg3.xml
 				cd merge-plugin-cfg
+
+				echo "   "
+				echo "Geting the port numbers of the running WebSphere-Liberty containers."
+				port1=$(docker port liberty1| cut -c 21-26)
+				lib1finalport1=$(echo $port1| cut -c 1-6)
+				lib1finalport2=$(echo $port1| cut -c 7-13)
+				port2=$(docker port liberty2| cut -c 21-26)
+				lib2finalport1=$(echo $port2| cut -c 1-6)
+				lib2finalport2=$(echo $port2| cut -c 7-13)
+				port3=$(docker port liberty3| cut -c 21-26)
+				lib3finalport1=$(echo $port3| cut -c 1-6)
+				lib3finalport2=$(echo $port3| cut -c 7-13)
+
+				echo "Printing ports for Liberty 1"
+				echo $lib1finalport1
+				echo $lib1finalport2
+
+				echo "Printing ports for Liberty 2"
+				echo $lib2finalport1
+				echo $lib2finalport2
+
+				echo "Printing ports fpr Liberty 3"
+				echo $lib3finalport1
+				echo $lib3finalport2
+
+				echo "   "
+				echo "Killing and removing each Liberty container"
+				#docker stop liberty1
+				#docker stop liberty2
+				#docker stop liberty3
+				#docker rm liberty1
+				#docker rm liberty2
+				#docker rm liberty3
 
 				echo "   "
 				echo "Creating new liberty container with the required .jar file"
@@ -96,7 +139,7 @@ HELP="--help"
 				#Not using as it is not yet working...
 				#echo "Downloading xml merge tool"
 				#wget https://github.com/WASdev/sample.pluginmergetool/releases/download/1.0/PluginMergeTool-1.0.jar
-				echo "Copying the merge tool to the container"
+				echo "Copying to the container"
 				#docker cp PluginMergeTool-1.0.jar liberty4:/opt/ibm/wlp/lib/com.ibm.ws.http.plugin.merge_1.0.9.jar
 				#work around for broken release of the merge tool on github
 				docker cp com.ibm.ws.http.plugin.merge_1.0.131.jar liberty4:/opt/ibm/wlp/lib/com.ibm.ws.http.plugin.merge_1.0.9.jar
@@ -116,87 +159,58 @@ HELP="--help"
 				cd merge-plugin-cfg
 
 
+				# echo "Testing to see if the final xml contains the required port numbers"
+				# if grep -q $lib1finalport1 merge-cfg.xml && grep -q $lib1finalport2 merge-cfg.xml; then
+				# 	echo "The ports for Liberty1 have been written to the merged xml file"
+				# else
+				# 	echo "Merge has not compleated successfully for Liberty1"
+				# fi
+				#
+				# if grep -q $lib2finalport1 merge-cfg.xml && grep -q $lib2finalport2 merge-cfg.xml; then
+				# 	echo "The ports for Liberty2 have been written to the merged xml file"
+				# else
+				# 	echo "Merge has not compleated successfully for Liberty2"
+				# fi
+				#
+				# if grep -q $lib3finalport1 merge-cfg.xml && grep -q $lib3finalport2 merge-cfg.xml; then
+				# 	echo "The ports for Liberty3 have been written to the merged xml file"
+				# 	echo "    "
+				# 	echo "Test Passed!!!"
+				# else
+				# 	echo "Merge has not compleated successfully for Liberty3"
+				# 	echo "   "
+				# 	echo "Test Failed!!!"
+				# fi
+
+				#Killing the final container!
+				echo "   "
+				echo "Killing the last Docker container"
+				docker stop liberty4
+				docker rm liberty4
+
+
 				#This is the new section to support IHS
 				echo "Pulling down and deploying the IHS image"
-				docker run -d -p 80:80 -h ihs --net=statictoplogy_default  --name=ihs jamielcoleman/ihs:v1
+				docker run -d -p 80:80 --net=net1 -h test --name=ihs jamielcoleman/ihs:v1
 				sleep 5s
 				echo "Send the merged xml to the IHS Instance"
 				docker cp merge-cfg.xml ihs:/opt/IBM/WebSphere/Plugins/config/webserver1/plugin-cfg.xml
 				echo "Stopping and starting the ihs server"
 		    docker exec ihs bash -c "/opt/IBM/HTTPServer/bin/apachectl stop"
 				echo "ihs has stopped"
+				#docker exec ihs rm /opt/IBM/WebSphere/Plugins/logs/webserver1/.......
 				sleep 5s
 		    docker exec ihs bash -c "/opt/IBM/HTTPServer/bin/apachectl start"
 				echo "ihs has started"
-				sleep 5s
-
-				#Getting the port numbers of the liberty instances that have been routed too
-				echo "Starting comparisons"
-				wget http://0.0.0.0:80/ferret -q -O ferret1.txt
-				port1=$(head -75 ferret1.txt | tail -1 | cut -c 7-11) >> test.txt
-				wget http://0.0.0.0:80/ferret -q -O ferret2.txt
-				port2=$(head -75 ferret2.txt | tail -1 | cut -c 7-11) >> test.txt
-				wget http://0.0.0.0:80/ferret -q -O ferret3.txt
-				port3=$(head -75 ferret3.txt | tail -1 | cut -c 7-11) >> test.txt
-				echo $port1
-				echo $port2
-				echo $port3
-
-				echo "Starting comparisons"
-				wget http://0.0.0.0:80/ferret -q -O ferret11.txt
-				port11=$(head -75 ferret1.txt | tail -1 | cut -c 7-11) >> test.txt
-				wget http://0.0.0.0:80/ferret -q -O ferret22.txt
-				port22=$(head -75 ferret2.txt | tail -1 | cut -c 7-11) >> test.txt
-				wget http://0.0.0.0:80/ferret -q -O ferret33.txt
-				port33=$(head -75 ferret3.txt | tail -1 | cut -c 7-11) >> test.txt
-				echo $port11
-				echo $port22
-				echo $port33
-
-				#Comparing ports
-				if [[ $port1 == $port11 ]]
-				then
-					result="PASS"
-				else
-					result="FAIL"
-				fi
-				if [[ $port2 == $port22 ]]
-				then
-					result="PASS"
-				else
-					result="FAIL"
-				fi
-				if [[ $port3 == $port33 ]]
-				then
-					result="PASS"
-				else
-					result="FAIL"
-				fi
-				echo "Test Result: $result"
-
-				#Cleanup
-				rm test.txt
-				rm ferret1.txt
-				rm ferret11.txt
-				rm ferret2.txt
-				rm ferret22.txt
-				rm ferret3.txt
-				rm ferret33.txt
-				rm plugin-cfg1.xml
-				rm plugin-cfg2.xml
-				rm plugin-cfg3.xml
-				rm merge-cfg.xml
-				echo "Killing and removing the IHS container"
-				docker stop ihs
-				docker rm ihs
+				echo "Killing the IHS container"
+				#docker stop ihs
+				#docker rm ihs
 				echo "Killing and removing each Liberty container"
-				docker stop liberty1
-				docker stop liberty2
-				docker stop liberty3
-				docker stop liberty4
-				docker rm liberty1
-				docker rm liberty2
-				docker rm liberty3
-				docker rm liberty4
+				#docker stop liberty1
+				#docker stop liberty2
+				#docker stop liberty3
+				#docker rm liberty1
+				#docker rm liberty2
+				#docker rm liberty3
 
 fi
