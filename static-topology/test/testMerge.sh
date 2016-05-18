@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 HELP="--help"
-		if [[ $1 -eq $HELP ]]
+	if [[ $1 -eq $HELP ]]
 			then
 				echo "USAGE"
 				echo "            No args are required! "
@@ -40,7 +40,6 @@ HELP="--help"
 				docker run -d --name liberty1 -h liberty1 --net=net1 liberty
 				docker run -d --name liberty2 -h liberty2 --net=net1 liberty
 				docker run -d --name liberty3 -h liberty3 --net=net1 liberty
-
 
 				#This section waits for Liberty to start otherwise the GenPluginCfg.sh script fails
 				echo "  "
@@ -96,14 +95,7 @@ HELP="--help"
 				docker cp plugin-cfg2.xml liberty4:/tmp
 				docker cp plugin-cfg3.xml liberty4:/tmp
 				docker cp pluginCfgMerge.sh liberty4:/tmp
-				#Not using as it is not yet working...
-				#echo "Downloading xml merge tool"
-				#wget https://github.com/WASdev/sample.pluginmergetool/releases/download/1.0/PluginMergeTool-1.0.jar
-				echo "Copying the merge tool to the container"
-				#docker cp PluginMergeTool-1.0.jar liberty4:/opt/ibm/wlp/lib/com.ibm.ws.http.plugin.merge_1.0.9.jar
-				#work around for broken release of the merge tool on github
-				#docker cp com.ibm.ws.http.plugin.merge_1.0.131.jar liberty4:/opt/ibm/wlp/lib/com.ibm.ws.http.plugin.merge_1.0.9.jar
-				echo "Tool Coppied"
+
 				found4=1
 				while [ $found4 != 0 ];
 				do
@@ -118,7 +110,6 @@ HELP="--help"
 				docker cp liberty4:/tmp/merge-cfg.xml merge-plugin-cfg/merge-cfg.xml
 				cd merge-plugin-cfg
 
-
 				#This is the new section to support IHS
 				echo "Pulling down and deploying the IHS image"
 				docker run -d -p 80:80 -h ihs --net=net1  --name=ihs jamielcoleman/ihs:v1
@@ -128,10 +119,10 @@ HELP="--help"
 				echo "Stopping and starting the ihs server"
 		    docker exec ihs bash -c "/opt/IBM/HTTPServer/bin/apachectl stop"
 				echo "ihs has stopped"
-				sleep 5s
+				sleep 3s
 		    docker exec ihs bash -c "/opt/IBM/HTTPServer/bin/apachectl start"
 				echo "ihs has started"
-				sleep 5s
+				sleep 3s
 
 				#Getting the port numbers of the liberty instances that have been routed too
 				echo "Starting comparisons"
@@ -156,6 +147,7 @@ HELP="--help"
 				echo $port33
 
 				#Comparing ports
+				echo "Comparing Ports"
 				if [[ $port1 == $port11 ]]
 				then
 					result="PASS"
