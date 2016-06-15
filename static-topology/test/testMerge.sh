@@ -112,7 +112,7 @@ HELP="--help"
 
 				#This is the new section to support IHS
 				echo "Pulling down and deploying the IHS image"
-				docker run -d -p 80:80 -h ihs --net=net1  --name=ihs jamielcoleman/ihs:v1
+				docker run -d -p 80:80 -h ihs --net=net1  --name=ihs ibmcom/ibm-http-server
 				sleep 5s
 				echo "Send the merged xml to the IHS Instance"
 				docker cp merge-cfg.xml ihs:/opt/IBM/WebSphere/Plugins/config/webserver1/plugin-cfg.xml
