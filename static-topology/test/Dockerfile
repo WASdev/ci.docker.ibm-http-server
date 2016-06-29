@@ -16,13 +16,7 @@ FROM baseliberty
 
 MAINTAINER Jamie L Coleman  <jlcoleman@uk.ibm.com>
 
-#RUN apt-get update 
-RUN wget https://www.ibm.com/developerworks/mydeveloperworks/blogs/wasdev/resource/DefaultServletEngine.zip
-RUN unzip DefaultServletEngine.zip -d /tmp/
-RUN mv /tmp/DefaultServletEngine/dropins/Sample1.war /opt/ibm/wlp/usr/servers/defaultServer/dropins/Sample1.war
-RUN installUtility install --acceptLicense collectiveController-1.0
+RUN wget http://repo1.maven.org/maven2/net/wasdev/wlp/sample/ferret/1.0/ferret-1.0.war
+RUN mv ferret-1.0.war  /opt/ibm/wlp/usr/servers/defaultServer/dropins/ferret-1.0.war
 
-
-
-
-
+ENV WLP_HOME=/opt/ibm/wlp

@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#
 # (C) Copyright IBM Corporation 2015.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 HELP="--help"
-		if [[ $1 -eq $HELP ]]
+	if [[ $1 -eq $HELP ]]
 			then
 				echo "USAGE"
 				echo "            No args are required! "
@@ -33,91 +33,59 @@ HELP="--help"
 				docker build -t baseliberty .
 				cd ..
 				cd test
+
+				#Create docker bridge network
+				docker network create net1
 				docker build -t liberty .
-				docker run -d -P --name=liberty1 liberty
-				docker run -d -P --name=liberty2 liberty
-				docker run -d -P --name=liberty3 liberty
-				
+				docker run -d --name liberty1 -h liberty1 --net=net1 liberty
+				docker run -d --name liberty2 -h liberty2 --net=net1 liberty
+				docker run -d --name liberty3 -h liberty3 --net=net1 liberty
+
 				#This section waits for Liberty to start otherwise the GenPluginCfg.sh script fails
 				echo "  "
 				echo "The test is waiting for all Liberty containers to start"
 				found=1
 				while [ $found != 0 ];
-				do				
-				sleep 5s
+				do
+				sleep 3s
 				docker logs liberty1 | grep "ready to run a smarter planet"
 				found=$?
 				done
 				docker exec liberty1 /opt/ibm/wlp/bin/GenPluginCfg.sh --installDir=/opt/ibm/wlp --userDir=/opt/ibm/wlp/usr --serverName=defaultServer
-				
+
 				found2=1
 				while [ $found2 != 0 ];
 				do
-				sleep 5s
+				sleep 3s
 				docker logs liberty2 | grep "ready to run a smarter planet"
 				found2=$?
 				done
 				docker exec liberty2 /opt/ibm/wlp/bin/GenPluginCfg.sh --installDir=/opt/ibm/wlp --userDir=/opt/ibm/wlp/usr --serverName=defaultServer
-				
+
 				found3=1
 				while [ $found3 != 0 ];
 				do
-				sleep 5s
+				sleep 3s
 				docker logs liberty3 | grep "ready to run a smarter planet"
 				found3=$?
 				done
 				docker exec liberty3 /opt/ibm/wlp/bin/GenPluginCfg.sh --installDir=/opt/ibm/wlp --userDir=/opt/ibm/wlp/usr --serverName=defaultServer
-				
+
 				cd ..
 				cd get-plugin-cfg
-				./GetPluginCfg.sh liberty1 default
+				./GetPluginCfg.sh liberty1 liberty1
 				mv plugin-cfg.xml plugin-cfg1.xml
-				
-				./GetPluginCfg.sh liberty2 default
+				./GetPluginCfg.sh liberty2 liberty2
 				mv plugin-cfg.xml plugin-cfg2.xml
-				
-				./GetPluginCfg.sh liberty3 default
+				./GetPluginCfg.sh liberty3 liberty3
 				mv plugin-cfg.xml plugin-cfg3.xml
-				
+
 				cd ..
 				mv get-plugin-cfg/plugin-cfg1.xml merge-plugin-cfg/plugin-cfg1.xml
 				mv get-plugin-cfg/plugin-cfg2.xml merge-plugin-cfg/plugin-cfg2.xml
-				mv get-plugin-cfg/plugin-cfg3.xml merge-plugin-cfg/plugin-cfg3.xml				
+				mv get-plugin-cfg/plugin-cfg3.xml merge-plugin-cfg/plugin-cfg3.xml
 				cd merge-plugin-cfg
-				
-				echo "   "
-				echo "Geting the port numbers of the running WebSphere-Liberty containers."
-				port1=$(docker port liberty1| cut -c 21-26)
-				lib1finalport1=$(echo $port1| cut -c 1-6)
-				lib1finalport2=$(echo $port1| cut -c 7-13)
-				port2=$(docker port liberty2| cut -c 21-26)
-				lib2finalport1=$(echo $port2| cut -c 1-6)
-				lib2finalport2=$(echo $port2| cut -c 7-13)
-				port3=$(docker port liberty3| cut -c 21-26)
-				lib3finalport1=$(echo $port3| cut -c 1-6)
-				lib3finalport2=$(echo $port3| cut -c 7-13)
-				
-				echo "Printing ports for Liberty 1"
-				echo $lib1finalport1
-				echo $lib1finalport2
-				
-				echo "Printing ports for Liberty 2"
-				echo $lib2finalport1
-				echo $lib2finalport2
-				
-				echo "Printing ports fpr Liberty 3"
-				echo $lib3finalport1
-				echo $lib3finalport2
-				
-				echo "   "
-				echo "Killing and removing each Liberty container"
-				docker kill liberty1
-				docker kill liberty2
-				docker kill liberty3
-				docker rm liberty1
-				docker rm liberty2
-				docker rm liberty3
-				
+
 				echo "   "
 				echo "Creating new liberty container with the required .jar file"
 				docker build -t libertytwo .
@@ -127,11 +95,11 @@ HELP="--help"
 				docker cp plugin-cfg2.xml liberty4:/tmp
 				docker cp plugin-cfg3.xml liberty4:/tmp
 				docker cp pluginCfgMerge.sh liberty4:/tmp
-				
+
 				found4=1
 				while [ $found4 != 0 ];
-				do				
-				sleep 5s
+				do
+				sleep 3s
 				docker logs liberty4 | grep "ready to run a smarter planet"
 				found4=$?
 				done
@@ -141,36 +109,88 @@ HELP="--help"
 				cd ..
 				docker cp liberty4:/tmp/merge-cfg.xml merge-plugin-cfg/merge-cfg.xml
 				cd merge-plugin-cfg
-				
-				
-				echo "Testing to see if the final xml contains the required port numbers"
-				if grep -q $lib1finalport1 merge-cfg.xml && grep -q $lib1finalport2 merge-cfg.xml; then
-					echo "The ports for Liberty1 have been written to the merged xml file"
-				else
-					echo "Merge has not compleated successfully for Liberty1"
-				fi
-				
-				if grep -q $lib2finalport1 merge-cfg.xml && grep -q $lib2finalport2 merge-cfg.xml; then
-					echo "The ports for Liberty2 have been written to the merged xml file"
-				else
-					echo "Merge has not compleated successfully for Liberty2"
-				fi
-				
-				if grep -q $lib3finalport1 merge-cfg.xml && grep -q $lib3finalport2 merge-cfg.xml; then
-					echo "The ports for Liberty3 have been written to the merged xml file"
-					echo "    "
-					echo "Test Passed!!!"
-				else
-					echo "Merge has not compleated successfully for Liberty3"
-					echo "   "
-					echo "Test Failed!!!"
-				fi
-				
-				#Killing the final container!
-				echo "   "
-				echo "Killing the last Docker container"
-				docker kill liberty4
-				docker rm liberty4
-fi
 
-	
+				#This is the new section to support IHS
+				echo "Pulling down and deploying the IHS image"
+				docker run -d -p 80:80 -h ihs --net=net1  --name=ihs ibmcom/ibm-http-server
+				sleep 5s
+				echo "Send the merged xml to the IHS Instance"
+				docker cp merge-cfg.xml ihs:/opt/IBM/WebSphere/Plugins/config/webserver1/plugin-cfg.xml
+				echo "Stopping and starting the ihs server"
+		    docker exec ihs bash -c "/opt/IBM/HTTPServer/bin/apachectl stop"
+				echo "ihs has stopped"
+				sleep 3s
+		    docker exec ihs bash -c "/opt/IBM/HTTPServer/bin/apachectl start"
+				echo "ihs has started"
+				sleep 3s
+
+				#Getting the port numbers of the liberty instances that have been routed too
+				echo "Starting comparisons"
+				wget http://0.0.0.0:80/ferret -q -O ferret1.txt
+				port1=$(head -75 ferret1.txt | tail -1 | cut -c 7-11) >> test.txt
+				wget http://0.0.0.0:80/ferret -q -O ferret2.txt
+				port2=$(head -75 ferret2.txt | tail -1 | cut -c 7-11) >> test.txt
+				wget http://0.0.0.0:80/ferret -q -O ferret3.txt
+				port3=$(head -75 ferret3.txt | tail -1 | cut -c 7-11) >> test.txt
+				echo $port1
+				echo $port2
+				echo $port3
+
+				wget http://0.0.0.0:80/ferret -q -O ferret11.txt
+				port11=$(head -75 ferret1.txt | tail -1 | cut -c 7-11) >> test.txt
+				wget http://0.0.0.0:80/ferret -q -O ferret22.txt
+				port22=$(head -75 ferret2.txt | tail -1 | cut -c 7-11) >> test.txt
+				wget http://0.0.0.0:80/ferret -q -O ferret33.txt
+				port33=$(head -75 ferret3.txt | tail -1 | cut -c 7-11) >> test.txt
+				echo $port11
+				echo $port22
+				echo $port33
+
+				#Comparing ports
+				echo "Comparing Ports"
+				if [[ $port1 == $port11 ]]
+				then
+					result="PASS"
+				else
+					result="FAIL"
+				fi
+				if [[ $port2 == $port22 ]]
+				then
+					result="PASS"
+				else
+					result="FAIL"
+				fi
+				if [[ $port3 == $port33 ]]
+				then
+					result="PASS"
+				else
+					result="FAIL"
+				fi
+				echo "Test Result: $result"
+
+				#Cleanup
+				rm test.txt
+				rm ferret1.txt
+				rm ferret11.txt
+				rm ferret2.txt
+				rm ferret22.txt
+				rm ferret3.txt
+				rm ferret33.txt
+				rm plugin-cfg1.xml
+				rm plugin-cfg2.xml
+				rm plugin-cfg3.xml
+				rm merge-cfg.xml
+				echo "Killing and removing the IHS container"
+				docker stop ihs
+				docker rm ihs
+				echo "Killing and removing each Liberty container"
+				docker stop liberty1
+				docker stop liberty2
+				docker stop liberty3
+				docker stop liberty4
+				docker rm liberty1
+				docker rm liberty2
+				docker rm liberty3
+				docker rm liberty4
+
+fi

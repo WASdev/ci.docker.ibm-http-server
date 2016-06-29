@@ -12,11 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM websphere-liberty
+FROM websphere-liberty:beta
 
 MAINTAINER Jamie Coleman  <jlcoleman@uk.ibm.com>
-
-# Install the collectiveController to get the required com.ibm.ws.http.plugin.merge_1.0.11.jar 
 
 RUN installUtility install --acceptLicense collectiveController-1.0
 
