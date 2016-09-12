@@ -28,8 +28,8 @@ An IBM HTTP Server ILAN image can be built by obtaining the following binaries:
   
 IBM HTTP Server ILAN install image is created in two steps using the following two Dockerfiles to reduce the final image size:
 
-1. [Dockerfile.prereq](Dockerfile.prereq)
-2. [Dockerfile.install](Dockerfile.install)
+1. [Dockerfile.prereq](https://github.com/WASdev/ci.docker.ibm-http-server/blob/master/ilan/Dockerfile.prereq)
+2. [Dockerfile.install](https://github.com/WASdev/ci.docker.ibm-http-server/blob/master/ilan/Dockerfile.install)
 
 Dockerfile.prereq perform the following actions:
 
