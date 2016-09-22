@@ -1,0 +1,81 @@
+#!/bin/bash
+#
+###########################################################################
+# (C) Copyright IBM Corporation 2015, 2016.                               #
+#                                                                         #
+# Licensed under the Apache License, Version 2.0 (the "License");         #
+# you may not use this file except in compliance with the License.        #
+# You may obtain a copy of the License at                                 #
+#                                                                         #
+#      http://www.apache.org/licenses/LICENSE-2.0                         #
+#                                                                         #
+# Unless required by applicable law or agreed to in writing, software     #
+# distributed under the License is distributed on an "AS IS" BASIS,       #
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.#
+# See the License for the specific language governing permissions and     #
+# limitations under the License.                                          #
+###########################################################################
+
+VERSION=$1
+IBM_ID=$2
+IBM_PASSWORD=$3
+
+SECURE_STORAGE_FILE=/tmp/credentials
+
+function save_credential() {
+  url=$1
+  /opt/IBM/InstallationManager/eclipse/tools/imutilsc saveCredential \
+    -url $url \
+    -userName $IBM_ID \
+    -userPassword $IBM_PASSWORD \
+    -secureStorageFile $SECURE_STORAGE_FILE
+}
+
+function remove_credential() {
+  rm $SECURE_STORAGE_FILE
+}
+
+function install_packages() {
+  install_dir=$1
+  repo=$2
+  shift 2
+  packages="$@"
+  echo $repo
+if [[ $repo == *"IHS"* ]]
+then
+  save_credential $repo
+  /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
+    -acceptLicense install $packages \
+    -repositories $repo \
+    -installationDirectory $install_dir \
+    -secureStorageFile $SECURE_STORAGE_FILE \
+    -properties "user.ihs.httpPort=80,user.ihs.allowNonRootSilentInstall=true" \
+    -preferences com.ibm.cic.common.core.preferences.preserveDownloadedArtifacts=false
+  result=$?
+  remove_credential
+else
+  save_credential $repo
+  /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
+    -acceptLicense install $packages \
+    -repositories $repo \
+    -installationDirectory $install_dir \
+    -secureStorageFile $SECURE_STORAGE_FILE \
+    -preferences com.ibm.cic.common.core.preferences.preserveDownloadedArtifacts=false
+  result=$?
+  remove_credential
+fi
+  return $result
+}
+
+function install_version() {
+  line=$(grep "^$VERSION" /host/versions.csv | cut -d "," -f 2-)
+  IFS=',' read -ra entries <<< "$line"
+  for entry in "${entries[@]}"; do
+    IFS='|' read install_dir repo packages <<< "$entry"
+    install_packages $install_dir $repo $packages || exit $?
+  done
+}
+
+
+install_version
+tar -cvf /host/install/ihs.tar /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox/WCT
