@@ -41,8 +41,10 @@ function install_packages() {
   shift 2
   packages="$@"
   echo $repo
-if [[ $repo == *"IHS"* ]]
+if [[ $packages == *"IHS"* ]]
 then
+echo "option1"
+echo $packages
   save_credential $repo
   /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
     -acceptLicense install $packages \
@@ -54,7 +56,9 @@ then
   result=$?
   remove_credential
 else
+echo "option2"
   save_credential $repo
+  echo $save_credential
   /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
     -acceptLicense install $packages \
     -repositories $repo \
@@ -78,4 +82,4 @@ function install_version() {
 
 
 install_version
-tar -cvf /host/install/ihs.tar /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox/WCT
+tar -zcvf /host/ihs.tar.gz /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox/WCT
