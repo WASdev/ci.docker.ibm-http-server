@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 ###########################################################################
-# (C) Copyright IBM Corporation 2016.                                     #
+# (C) Copyright IBM Corporation 2015, 2016.                               #
 #                                                                         #
 # Licensed under the Apache License, Version 2.0 (the "License");         #
 # you may not use this file except in compliance with the License.        #
@@ -16,21 +16,15 @@
 # limitations under the License.                                          #
 ###########################################################################
 
-if [ $# != 3 ]; then
-  echo "Usage: build <version> <IBMid> <IBMid password>"
-  exit 1
-fi
+REPO=$1
 
-docker build -t installation-manager im || exit $?
-docker run --rm -v $(pwd):/host installation-manager /host/install_ihs $1 $2 $3 || exit $?
+tmp=$(cat versions.csv| cut -d, -f1)
 
-docker run -d --name tar_server -v $(pwd)/ihs$1.tar.gz:/host/ihs$1.tar.gz -w /host python:2-slim python -m SimpleHTTPServer
-tar_server_ip=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' tar_server)
-tar_url="http://${tar_server_ip}:8000/ihs${1}.tar.gz"
+versions=$(echo  $tmp | cut -d " " -f 2-)
 
+IFS=' ' read -ra entries <<< "$versions"
+for entry in "${entries[@]}"; do
+    IFS=' ' read ver <<< "$entry"
+    docker push $1 + "ihs:" + ver 
+done
 
-# Build install image from hosted tar file
-echo "building install image"
-docker build -t ihs:$1 --build-arg TAR_URL=$tar_url . || exit $?
-docker rm -f tar_server
-#docker rm -f installation-manager:latest

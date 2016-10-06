@@ -19,7 +19,9 @@
 VERSION=$1
 IBM_ID=$2
 IBM_PASSWORD=$3
-
+JAVA_NEEDED="no"
+JAVA_PACKAGE=""
+echo "Running build for versions: "$VERSION
 SECURE_STORAGE_FILE=/tmp/credentials
 
 function save_credential() {
@@ -40,11 +42,18 @@ function install_packages() {
   repo=$2
   shift 2
   packages="$@"
-  echo $repo
-if [[ $packages == *"IHS"* ]]
+
+if [[ $packages == *"java"* ]]
 then
-echo "option1"
-echo $packages
+unset JAVA_NEEDED
+JAVA_NEEDED="yes"
+JAVA_PACKAGE=$packages
+else if [[ $packages == *"IHS"* ]]
+then
+  if [[ $JAVA_NEEDED == *"yes"* ]]
+  then
+  packages="$JAVA_PACKAGE $packages"
+fi
   save_credential $repo
   /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
     -acceptLicense install $packages \
@@ -56,9 +65,8 @@ echo $packages
   result=$?
   remove_credential
 else
-echo "option2"
+packages="$JAVA_PACKAGE $packages"
   save_credential $repo
-  echo $save_credential
   /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
     -acceptLicense install $packages \
     -repositories $repo \
@@ -67,6 +75,7 @@ echo "option2"
     -preferences com.ibm.cic.common.core.preferences.preserveDownloadedArtifacts=false
   result=$?
   remove_credential
+fi
 fi
   return $result
 }
@@ -82,4 +91,4 @@ function install_version() {
 
 
 install_version
-tar -zcvf /host/ihs.tar.gz /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox/WCT
+tar -zcvf /host/ihs${VERSION}.tar.gz /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox/WCT

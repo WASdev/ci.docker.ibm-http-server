@@ -21,24 +21,10 @@ MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com>
 
 RUN apt-get update && apt-get install -y openssl wget
 
-ARG USER=was
-ARG GROUP=was
 ARG TAR_URL
 
-COPY ihsstart.sh /work/  
-
-RUN groupadd $GROUP \
-    && useradd $USER -g $GROUP -m \
-    && chown -R $USER:$GROUP /work /opt
-
-USER $USER
-
-RUN echo $TAR_URL
+COPY ihsstart.sh /work/
 
 RUN wget -q -O - $TAR_URL | tar xz
-
-RUN ln -s /opt/IBM/HTTPServer/java /opt/IBM/WebSphere/Plugins/java \
-    && ln -s /opt/IBM/HTTPServer/java /opt/IBM/WebSphere/Toolbox/java \
-    && chmod +x /work/ihsstart.sh
-
+ENV PATH opt/IBM/HTTPServer/bin:$PATH
 CMD ["/work/ihsstart.sh"]
