@@ -25,6 +25,6 @@ versions=$(echo  $tmp | cut -d " " -f 2-)
 IFS=' ' read -ra entries <<< "$versions"
 for entry in "${entries[@]}"; do
     IFS=' ' read ver <<< "$entry"
-    docker push $1 + "ihs:" + ver 
+    docker push $1 + "ibm-http-server:" + ver 
 done
 
