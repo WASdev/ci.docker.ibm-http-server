@@ -16,15 +16,14 @@
 # limitations under the License.                                          #
 ###########################################################################
 
-REPO=$1
+if [ $# != 1 ]; then
+  echo "Usage: push_all <registry>"
+  exit 1
+fi
 
-tmp=$(cat versions.csv| cut -d, -f1)
-
-versions=$(echo  $tmp | cut -d " " -f 2-)
-
-IFS=' ' read -ra entries <<< "$versions"
-for entry in "${entries[@]}"; do
-    IFS=' ' read ver <<< "$entry"
-    docker push $1 + "ibm-http-server:" + ver 
-done
+while read line; do
+  if [[ $line == \#* ]]; then continue; fi
+  version=$(cut -d, -f1 <<< $line)
+  docker push $1 + "ibm-http-server:" + version
+done < versions.csv
 

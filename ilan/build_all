@@ -16,16 +16,13 @@
 # limitations under the License.                                          #
 ###########################################################################
 
-USERNAME=$1
-PASSWORD=$2
+if [ $# != 2 ]; then
+  echo "Usage: build_all <IBMid> <IBMid password>"
+  exit 1
+fi
 
-
-tmp=$(cat versions.csv| cut -d, -f1)
-
-versions=$(echo  $tmp | cut -d " " -f 2-)
-
-IFS=' ' read -ra entries <<< "$versions"
-for entry in "${entries[@]}"; do
-    IFS=' ' read ver <<< "$entry"
-    ./build $ver $1 $2
-done
+while read line; do
+  if [[ $line == \#* ]]; then continue; fi
+  version=$(cut -d, -f1 <<< $line)
+./build $version $1 $2
+done < versions.csv

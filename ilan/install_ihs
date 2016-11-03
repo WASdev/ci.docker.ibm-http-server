@@ -55,7 +55,6 @@ then
   result=$?
   remove_credential
 else
-packages="$JAVA_PACKAGE $packages"
   save_credential $repo
   /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
     -acceptLicense install $packages \
@@ -80,4 +79,9 @@ function install_version() {
 
 
 install_version
-tar -zcvf /host/ihs${VERSION}.tar.gz /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox/WCT
+if [ -f "/opt/IBM/HTTPServer/java/8.0/src.zip" ];
+then
+   echo "Removing Extra Java Versions"
+fi
+
+tar --exclude='/opt/IBM/WebSphere/Plugins/java' -zcf /host/ihs${VERSION}.tar.gz /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox/WCT

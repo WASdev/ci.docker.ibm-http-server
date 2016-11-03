@@ -26,5 +26,5 @@ ARG TAR_URL
 COPY ihsstart.sh /work/
 
 RUN wget -q -O - $TAR_URL | tar xz
-ENV PATH opt/IBM/HTTPServer/bin:$PATH
+ENV PATH /opt/IBM/HTTPServer/bin:$PATH
 CMD ["/work/ihsstart.sh"]
