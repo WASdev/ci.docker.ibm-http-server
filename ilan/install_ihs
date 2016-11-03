@@ -19,7 +19,7 @@
 VERSION=$1
 IBM_ID=$2
 IBM_PASSWORD=$3
-
+echo "Running build for versions: "$VERSION
 SECURE_STORAGE_FILE=/tmp/credentials
 
 function save_credential() {
@@ -40,8 +40,9 @@ function install_packages() {
   repo=$2
   shift 2
   packages="$@"
-  echo $repo
-if [[ $repo == *"IHS"* ]]
+
+echo $packages
+if [[ $packages == *"IHS"* ]]
 then
   save_credential $repo
   /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
@@ -78,4 +79,4 @@ function install_version() {
 
 
 install_version
-tar -cvf /host/install/ihs.tar /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox/WCT
+tar -zcf /host/ihs${VERSION}.tar.gz /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox/WCT

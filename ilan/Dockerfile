@@ -19,12 +19,12 @@ FROM ubuntu:16.04
 
 MAINTAINER Kavitha Suresh Kumar <kavisuresh@in.ibm.com>
 
-ADD ihs_plg_wct.tar /
+RUN apt-get update && apt-get install -y openssl wget
 
-COPY ihsstart.sh /work/  
+ARG TAR_URL
 
-RUN ln -s /opt/IBM/HTTPServer/java /opt/IBM/WebSphere/Plugins/java \
-    && ln -s /opt/IBM/HTTPServer/java /opt/IBM/WebSphere/Toolbox/java \
-    && chmod +x /work/ihsstart.sh
+COPY ihsstart.sh /work/
 
+RUN wget -q -O - $TAR_URL | tar xz
+ENV PATH /opt/IBM/HTTPServer/bin:$PATH
 CMD ["/work/ihsstart.sh"]

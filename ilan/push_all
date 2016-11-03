@@ -16,16 +16,14 @@
 # limitations under the License.                                          #
 ###########################################################################
 
-FROM ubuntu:16.04
+if [ $# != 1 ]; then
+  echo "Usage: push_all <registry>"
+  exit 1
+fi
 
-RUN apt-get update && apt-get install -y unzip
+while read line; do
+  if [[ $line == \#* ]]; then continue; fi
+  version=$(cut -d, -f1 <<< $line)
+  docker push $1 + "ibm-http-server:" + version
+done < versions.csv
 
-# Install IBM Installation Manager
-COPY agent.installer.linux.gtk.x86_64_*.zip /tmp/
-RUN unzip -qd /tmp/im /tmp/agent.installer.linux.gtk.x86_64_*.zip \
-  && /tmp/im/installc -acceptLicense -accessRights nonAdmin \
-    -installationDirectory "/opt/IBM/InstallationManager"  \
-    -dataLocation "/var/ibm/InstallationManager" -showProgress \
-  && rm -rf /tmp/agent.installer.linux.gtk.x86_65_*.zip /tmp/im
-
-ENV PATH /opt/IBM/InstallationManager/eclipse/tools:$PATH
