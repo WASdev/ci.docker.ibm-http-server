@@ -79,9 +79,4 @@ function install_version() {
 
 
 install_version
-if [ -f "/opt/IBM/HTTPServer/java/8.0/src.zip" ];
-then
-   echo "Removing Extra Java Versions"
-fi
-
-tar --exclude='/opt/IBM/WebSphere/Plugins/java' -zcf /host/ihs${VERSION}.tar.gz /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox/WCT
+tar -zcf /host/ihs${VERSION}.tar.gz /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox/WCT
