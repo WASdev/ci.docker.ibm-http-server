@@ -24,6 +24,7 @@ fi
 while read line; do
   if [[ $line == \#* ]]; then continue; fi
   version=$(cut -d, -f1 <<< $line)
-  docker push $1 + "ibm-http-server:" + version
+  docker tag ibm-http-server:$version $1/ibm-http-server:$version
+  docker push $1/ibm-http-server:$version
 done < versions.csv
 
