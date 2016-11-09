@@ -1,4 +1,4 @@
-#!/bin/bash
+##!/bin/bash
 #
 ###########################################################################
 # (C) Copyright IBM Corporation 2015, 2016.                               #
@@ -27,4 +27,8 @@ while read line; do
   docker tag ibm-http-server:$version $1/ibm-http-server:$version
   docker push $1/ibm-http-server:$version
 done < versions.csv
+
+#Add latest tag and push to the last build image
+docker tag $1/ibm-http-server:$version $1/ibm-http-server:latest
+docker push $1/ibm-http-server:latest
 
