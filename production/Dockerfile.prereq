@@ -94,16 +94,16 @@ RUN /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
 ###################### WebSphere Customization Tools Fixpack ################### 
 
 # Install IBM WebSphere Customization Tools Fixpack
-RUN mkdir /tmp/wct \                                                                         
-    && wget -q $URL/8.5.5-WS-WCT-FP0000009-part1.zip -O /tmp/wct1.zip \                       
-    && wget -q $URL/8.5.5-WS-WCT-FP0000009-part2.zip -O /tmp/wct2.zip \                       
-    && unzip  -qd /tmp/wct /tmp/wct1.zip \                                                                          
-    && unzip  -qd /tmp/wct /tmp/wct2.zip \                                                                          
-    && rm /tmp/wct1.zip /tmp/wct2.zip \                                                                             
-    && /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \                                              
-      -acceptLicense  install com.ibm.websphere.WCT.v85 \                                                         
-      -repositories /tmp/wct/repository.config  \                                                                     
-      -installationDirectory /opt/IBM/WebSphere/Toolbox \                                                             
-    && rm -fr /tmp/wct                      
+RUN mkdir /tmp/wct \
+    && wget -q $URL/8.5.5-WS-WCT-FP0000009-part1.zip -O /tmp/wct1.zip \
+    && wget -q $URL/8.5.5-WS-WCT-FP0000009-part2.zip -O /tmp/wct2.zip \
+    && unzip  -qd /tmp/wct /tmp/wct1.zip \
+    && unzip  -qd /tmp/wct /tmp/wct2.zip \
+    && rm /tmp/wct1.zip /tmp/wct2.zip \
+    && /opt/IBM/InstallationManager/eclipse/tools/imcl -showProgress \
+      -acceptLicense  install com.ibm.websphere.WCT.v85 \
+      -repositories /tmp/wct/repository.config  \
+      -installationDirectory /opt/IBM/WebSphere/Toolbox \
+    && rm -fr /tmp/wct
 
-CMD ["tar","cvf","/tmp/ihs_plg_wct.tar","/opt/IBM/HTTPServer","/opt/IBM/WebSphere/Plugins","/opt/IBM/WebSphere/Toolbox/WCT"]
+CMD ["tar","cvf","/tmp/ihs_plg_wct.tar","/opt/IBM/HTTPServer","/opt/IBM/WebSphere/Plugins","/opt/IBM/WebSphere/Toolbox"]
