@@ -8,9 +8,10 @@ Versions available:
 8.5.5.9
 8.5.5.10
 9.0.0.0
+9.0.0.3
 
 Pre-req
-You are required to download a version of IBM Installation Manager above version 8 and place it into the /ilan/im directory.
+You are required to download a version of IBM Installation Manager above version 1.8 and place it into the /ilan/im directory.
 Download Location: [IBM Support] (http://www-01.ibm.com/support/docview.wss?uid=swg27025142)
 
 If you require all available versions of IHS then simply run the script buildAll with the arguments of a IBM ID and password. These are required for downloading the binaries as part of the installation. If you just want to build a specific version then you can run the build script with the version you require followed by an IBM ID and password.
