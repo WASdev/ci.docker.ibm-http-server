@@ -38,7 +38,6 @@ RUN mkdir /host
 RUN mkdir /target
 COPY install_ihs.sh /host
 COPY versions.csv /host
-COPY Dockerfile.template /host
 RUN chmod 700 /host/install_ihs.sh
 
 # requires envvars
@@ -47,4 +46,7 @@ ARG IBM_ID
 ARG IBM_PASSWORD
 RUN /host/install_ihs.sh
 RUN tar zcf /target/ihs${VERSION}.tar.gz /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox
+
+# Build the version specific Docker file
+COPY Dockerfile.template /host
 RUN sed s/@VERSION@/${VERSION}/ /host/Dockerfile.template > /target/Dockerfile.${VERSION}
