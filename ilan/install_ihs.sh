@@ -16,9 +16,6 @@
 # limitations under the License.                                          #
 ###########################################################################
 
-VERSION=$1
-IBM_ID=$2
-IBM_PASSWORD=$3
 echo "Running build for versions: "$VERSION
 SECURE_STORAGE_FILE=/tmp/credentials
 
@@ -79,4 +76,3 @@ function install_version() {
 
 
 install_version
-tar -zcf /host/ihs${VERSION}.tar.gz /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox
