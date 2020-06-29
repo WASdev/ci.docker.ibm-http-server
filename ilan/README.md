@@ -4,11 +4,7 @@ An IBM HTTP Server ILAN image can be built by running one script.
 
 This repository contains build scripts that can be used for building an IHS Docker image. The output of the build will give you IHS, the IHS plugins and the IBM customisation tools.
 
-Versions available:
-8.5.5.9
-8.5.5.10
-9.0.0.0
-9.0.0.3
+See the [versions.csv](./versions.csv) file for a list of all available versions.
 
 Pre-req
 You are required to download a version of IBM Installation Manager above version 1.8 and place it into the /ilan/im directory.
