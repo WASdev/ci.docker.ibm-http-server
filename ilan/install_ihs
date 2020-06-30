@@ -79,4 +79,12 @@ function install_version() {
 
 
 install_version
+
+if [[ $VERSION == "9.0"* ]]
+then
+  rm -rf /opt/IBM/WebSphere/Plugins/java /opt/IBM/WebSphere/Toolbox/java
+  ln -s /opt/IBM/HTTPServer/java /opt/IBM/WebSphere/Plugins/java
+  ln -s /opt/IBM/HTTPServer/java /opt/IBM/WebSphere/Toolbox/java
+fi
+
 tar -zcf /host/ihs${VERSION}.tar.gz /opt/IBM/HTTPServer /opt/IBM/WebSphere/Plugins /opt/IBM/WebSphere/Toolbox

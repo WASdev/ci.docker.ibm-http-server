@@ -1,7 +1,5 @@
-#!/bin/bash
-#
 ###########################################################################
-# (C) Copyright IBM Corporation 2015, 2016.                               #
+# (C) Copyright IBM Corporation 2020.                                     #
 #                                                                         #
 # Licensed under the Apache License, Version 2.0 (the "License");         #
 # you may not use this file except in compliance with the License.        #
@@ -16,9 +14,10 @@
 # limitations under the License.                                          #
 ###########################################################################
 
-FROM ubuntu:16.04
+FROM registry.access.redhat.com/ubi8/ubi
 
-RUN apt-get update && apt-get install -y unzip
+RUN yum install -y unzip \
+    && yum clean all && rm -rf /var/cache/yum
 
 # Install IBM Installation Manager
 COPY agent.installer.linux.gtk.*.zip /tmp/
