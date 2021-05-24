@@ -6,7 +6,7 @@ a single zip. This method does not require IM to be installed.
 ## Getting the Archive
 
 Archive installs from IBM HTTP Server can be found on Fix Central. Links to the archives are also provided in each fix
-pack document. Using the archive install requires entitlement.
+pack document. Downloading the IBM HTTP Server archive file requires entitlement.
 
 1. Visit [Fix list for IBM HTTP Server Version 9.0](https://www.ibm.com/support/pages/node/617655)
 2. Select the desired fix pack
