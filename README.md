@@ -2,11 +2,13 @@
 
 ## Support Statement
 
-This repository can still be used to build IBM HTTP Server images, but these images are no longer being published to the
+This repository can still be used to build IBM HTTP Server (IHS) images, but these images are no longer being published to the
 [ibmcom](https://hub.docker.com/r/ibmcom/) Docker Hub registry. The `ibmcom/ibm-http-server` images are no longer
 published and have been removed.
 
-These images are also not supported when deployed using OpenShift or Kubernetes.
+IHS is supported only when used in a way that is direct or otherwise necessary to support an IBM product (such as WebSphere Application Server) that includes it.
+Using IHS as a gateway to WebSphere (or any other IBM product) running in OpenShift (or any other Kubernetes platform) is NOT a supported configuration, since this platform
+provides this function intrinsically. For more details see https://publib.boulder.ibm.com/httpserv/ihsdiag/openshift.html
 
 ## Building the Images
 
