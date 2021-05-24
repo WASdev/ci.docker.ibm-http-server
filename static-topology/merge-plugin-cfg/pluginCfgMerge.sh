@@ -1,5 +1,5 @@
-#!/bin/bash -x
-set -x
+#!/bin/bash
+
 # (C) Copyright IBM Corporation 2015.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,61 +14,32 @@ set -x
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-HELP="--help"
-if [ "$WLP_HOME" != "" ]
- then
-  if [ "$JAVA_HOME" != "" ]
-    then
-     if [[ -n "$1" ]] && [[ -n "$2" ]] && [[ -n "$3" ]]
-      then
-        if [ $1 = $HELP ]
-          then
-            echo "USAGE"
-            echo "            <WLP_HOME>/bin/pluginCfgMerge.[sh|.bat] plugin-cfg1.xml plugin-cfg2.xml [...] plugin-cfg.xml"
-            echo "               "
-            echo "DESCRIPTION"
-            echo "            The PluginCfgMerge Tool combines the plugin-cfg.xml files from two or more unbridged"
-            echo "            cells such that the IBM HTTP Server Plugin will route traffic to all servers in the cells. "
-            echo "            A uri is considered to be shared between two unbridged cells if the uri and
-                                                  corresponding virtual host definitions are identical."
-            echo "                                                      "
-            echo "            The contents of the merged plugin-cfg.xml files must be in English language"
-            echo "                                                         "
-            echo "            Additional parmaters:"
-            echo "            -debug               = prints additional log statements"
-            echo "            -sortVhostGrp        = adds VirtualHostGroup name as part of the key.  Use this if a single XML contains"
-            echo "                                   two identical sets of URIs assigned to two different VirtualHostGroup Names."
-            echo "            -setMatchUriAppVhost = sets the MatchUriAppVhost value."
-            echo "            <WLP_HOME>/bin/pluginCfgMerge.[sh|.bat] -sortVhostGrp -debug plugin-cfg1.xml plugin-cfg2.xml [...] plugin-cfg.xml"
-else
-          JAVA_CMD=${JAVA_HOME}/jre/bin/java
-          JAVAPROGRAM=$WLP_HOME/lib/com.ibm.ws.http.plugin.merge_1.1.13.jar
-          MAINCLASS=com.ibm.ws.http.plugin.merge.internal.PluginMergeToolImpl
-          VAR="-Djava.ext.dirs=$WLP_HOME/lib"
-          $JAVA_CMD $VAR -cp $JAVAPROGRAM $MAINCLASS $@
-        fi
-        else
-           echo "USAGE"
-            echo "            <WLP_HOME>/bin/pluginCfgMerge.[sh|.bat] plugin-cfg1.xml plugin-cfg2.xml [...] plugin-cfg.xml"
-            echo "               "
-            echo "DESCRIPTION"
-            echo "            The PluginCfgMerge Tool combines the plugin-cfg.xml files from two or more unbridged"
-            echo "            cells such that the IBM HTTP Server Plugin will route traffic to all servers in the cells. "
-            echo "            A uri is considered to be shared between two unbridged cells if the uri and
-                                                  corresponding virtual host definitions are identical."
-            echo "                                                      "
-            echo "            The contents of the merged plugin-cfg.xml files must be in English language"
-            echo "                                                         "
-            echo "            Additional parmaters:"
-            echo "            -debug               = prints additional log statements"
-            echo "            -sortVhostGrp        = adds VirtualHostGroup name as part of the key.  Use this if a single XML contains"
-            echo "                                   two identical sets of URIs assigned to two different VirtualHostGroup Names."
-            echo "            -setMatchUriAppVhost = sets the MatchUriAppVhost value."
-            echo "            <WLP_HOME>/bin/pluginCfgMerge.[sh|.bat] -sortVhostGrp -debug plugin-cfg1.xml plugin-cfg2.xml [...] plugin-cfg.xml"
+if [[ -z "${JAVA_HOME}" ]]; then
+    echo "Please set the environment variable JAVA_HOME"
+    exit 1
 fi
-     else
-       echo Please set your JAVA_HOME environment variable
-  fi
-  else
-    echo Please set your WLP_HOME environment variable
+
+if [[ -z "${WLP_HOME}" ]]; then
+    echo "Please set the environment variable WLP_HOME to your WLP root path"
+    exit 1
 fi
+
+JAVA_CMD=${JAVA_HOME}/jre/bin/java
+if [[ ! -d "${JAVA_HOME}/jre" ]]; then
+    JAVA_CMD=${JAVA_HOME}/bin/java
+fi
+
+PLUGIN_MERGE_JAR=$(find "${WLP_HOME}/lib" -name com.ibm.ws.http.plugin.merge_*.jar)
+if [[ -z "${PLUGIN_MERGE_JAR}" ]]; then
+    echo "Unable to find com.ibm.ws.http.plugin.merge jar in '${WLP_HOME}/lib'"
+    exit 1
+fi
+
+LOGGING_JAR=$(find "${WLP_HOME}/lib" -name com.ibm.ws.logging_*.jar)
+if [[ -z "${LOGGING_JAR}" ]]; then
+    echo "Unable to find com.ibm.ws.logging jar in '${WLP_HOME}/lib'"
+    exit 1
+fi
+
+MAINCLASS=com.ibm.ws.http.plugin.merge.internal.PluginMergeToolImpl
+$JAVA_CMD -cp "${PLUGIN_MERGE_JAR}:${LOGGING_JAR}" $MAINCLASS $@
