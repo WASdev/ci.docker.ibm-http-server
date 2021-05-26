@@ -11,7 +11,7 @@ pack document. Downloading the IBM HTTP Server archive file requires entitlement
 1. Visit [Fix list for IBM HTTP Server Version 9.0](https://www.ibm.com/support/pages/node/617655)
 2. Select the desired fix pack
 3. Click the link for `Download Fix Pack <fixpack>`
-4. Go to the section `IBM HTTP Server and Web server Plug-ins archive packages`
+4. Go to the section `IBM HTTP Server and Web server Plug-ins *archive* packages`
 5. Download the archive that matches the base image operating system and architecture
 6. Place the image of your Docker context root.
 
