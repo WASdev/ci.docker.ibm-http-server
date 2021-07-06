@@ -23,7 +23,7 @@ IHS image. Note that IHS archive requires entitlement.
 ### Installation Manager Builds
 
 The ILAN and production images have a dependency on IBM Installation Manager in order to be built. We recommend building
-the IBM HTTP Server images from an archive instead since it requires you to collect zip file instead of several.
+the IBM HTTP Server images from an archive instead since it requires you to collect a single small zip file instead of several large ones.
 
 * [IBM HTTP Server ILAN image](https://github.com/WASdev/ci.docker.ibm-http-server/tree/master/ilan)
 * [IBM HTTP Server Production image](https://github.com/WASdev/ci.docker.ibm-http-server/tree/master/production)
